@@ -13,6 +13,7 @@ from rl.memory import SequentialMemory
 from rl.random import OrnsteinUhlenbeckProcess
 import pickle
 
+
 env = Environment()
 
 trainName = 'aaav25sizePenal'
@@ -51,17 +52,6 @@ agent = DDPGAgent(nb_actions=env.action_space_size, actor=actor, critic=critic, 
                   random_process=random_process, gamma=.99, target_model_update=1e-3)
 agent.compile(Adam(lr=0.001, clipnorm=1.), metrics=['mae'])
 
-# agent.load_weights('{}_weights.h5f'.format(trainName))
+agent.load_weights('../weights/{}_weights.h5f'.format(trainName))
 
-hist = agent.fit(env, nb_steps=100000, visualize=True, verbose=2,
-                 nb_max_episode_steps=1000)  # train our agent and store training in hist
-filename = trainName
-
-# we save the history of learning, it can further be used to plot reward evolution
-with open(filename + '.pickle', 'wb') as handle:
-    pickle.dump(hist.history, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-agent.save_weights(
-    '{}_weights.h5f'.format(trainName),
-    overwrite=True)
-
+agent.test(env, nb_episodes=20, visualize=True, verbose=0, nb_max_episode_steps=1000000)

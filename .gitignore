@@ -1,6 +1,4 @@
 venv/
 .idea/
 __pycache__/
-aaav25sizePenal.pickle
-aaav25sizePenal_weights_actor.h5f
-aaav25sizePenal_weights_critic.h5f
+weights/
